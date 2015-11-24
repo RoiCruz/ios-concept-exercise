@@ -15,6 +15,7 @@
 		8E27D46F1C04B0C700AC9DEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E27D46D1C04B0C700AC9DEB /* LaunchScreen.storyboard */; };
 		8E27D47A1C04B0C700AC9DEB /* iOSConceptExerciseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E27D4791C04B0C700AC9DEB /* iOSConceptExerciseTests.m */; };
 		8E27D4851C04B0C700AC9DEB /* iOSConceptExerciseUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E27D4841C04B0C700AC9DEB /* iOSConceptExerciseUITests.m */; };
+		8E27D4941C04CF3100AC9DEB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E27D4931C04CF3100AC9DEB /* DataManager.m */; };
 		F548A8A9AC36652B5737030F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61541D2B20DAF25AEE9C8966 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,8 @@
 		8E27D4801C04B0C700AC9DEB /* iOSConceptExerciseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSConceptExerciseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E27D4841C04B0C700AC9DEB /* iOSConceptExerciseUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSConceptExerciseUITests.m; sourceTree = "<group>"; };
 		8E27D4861C04B0C700AC9DEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E27D4921C04CF3100AC9DEB /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		8E27D4931C04CF3100AC9DEB /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,8 @@
 			children = (
 				8E27D4621C04B0C700AC9DEB /* AppDelegate.h */,
 				8E27D4631C04B0C700AC9DEB /* AppDelegate.m */,
+				8E27D4921C04CF3100AC9DEB /* DataManager.h */,
+				8E27D4931C04CF3100AC9DEB /* DataManager.m */,
 				8E27D4651C04B0C700AC9DEB /* ViewController.h */,
 				8E27D4661C04B0C700AC9DEB /* ViewController.m */,
 				8E27D4681C04B0C700AC9DEB /* Main.storyboard */,
@@ -349,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E27D4671C04B0C700AC9DEB /* ViewController.m in Sources */,
+				8E27D4941C04CF3100AC9DEB /* DataManager.m in Sources */,
 				8E27D4641C04B0C700AC9DEB /* AppDelegate.m in Sources */,
 				8E27D4611C04B0C700AC9DEB /* main.m in Sources */,
 			);
