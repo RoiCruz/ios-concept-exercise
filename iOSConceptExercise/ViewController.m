@@ -14,21 +14,28 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
 @interface ViewController () {
     NSMutableArray *content;
     NSMutableArray *title;
+    
+    NSArray *recipes;
 }
 
 @end
 
 @implementation ViewController
 
-//- (void) viewDidAppear:(BOOL)animated {
-//    [super viewDidAppear:animated];
-//
-//    [self.mTableView reloadData];
-//}
+- (void) viewDidAppear:(BOOL)animated {
+
+
+
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    content = [[NSMutableArray alloc] init];
+
     
     //1. convert url
     NSString *urlString = BaseURLString;
@@ -48,8 +55,11 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         
         NSDictionary *dic1 = (NSDictionary *)responseObject;
         content = [dic1 objectForKey:@"rows"];
+        NSLog(@"first content count is %lu", (unsigned long)content.count);
         NSLog(@"content array is: %@", content);
 
+        //data loaded asynchrously so got to call reloadData after setting JSON Values
+        [_mTableView reloadData];
 
         
 //        NSString *str1 = [things objectAtIndex:2];
@@ -69,6 +79,11 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         //code
     }];
     [operation start];
+    
+
+    
+    recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,38 +91,30 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     // Dispose of any resources that can be recreated.
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return content.count;
-}
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *MyIdentifier = @"MyIdentifier";
-    
-    /*
-     Retrieve a cell with the given identifier from the table view.
-     The cell is defined in the main storyboard: its identifier is MyIdentifier, and  its selection style is set to None.
-     */
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-
-    UILabel *label = nil;
-    UIImageView *thumbView = nil;
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
-    }else {
-        label = (UILabel *)[cell.contentView viewWithTag:101];
-        thumbView = (UIImageView*)[cell.contentView viewWithTag:100];
-        
-        label.text = content[indexPath.row][@"title"];
-        thumbView.image = content[indexPath.row][@"imageHref"];
-        
-//        cell.textLabel.text =content[indexPath.row][@"title"];
-
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+    {
+        NSLog(@"content count is %lu", (unsigned long)[content count]);
+        return [content count];
+        //return [recipes count];
     }
     
-    return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+    {
+        static NSString *CellTableIdentifier = @"Celll";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellTableIdentifier];
+        }
+        
+        cell.textLabel.text = content[indexPath.row][@"description"];
+
+        return cell;
 }
+
 
 
 @end
