@@ -117,6 +117,9 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
         
+        // fix - resize custom cell upon orientation change
+        cell.frame =  CGRectMake(0, 0, tableView.frame.size.width, cell.frame.size.height);
+        
         label = (UILabel *)[cell.contentView viewWithTag:101];
         thumbView = (UIImageView*)[cell.contentView viewWithTag:100];
         subtitle = (UILabel *)[cell.contentView viewWithTag:102];
@@ -135,7 +138,7 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
             NSLog(@"image array is string");
             
-            [thumbView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+            [thumbView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]]; //lazy load images
         } else {
             thumbView.image = [UIImage imageNamed:@"placeholder.png"];
         }
