@@ -115,9 +115,12 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         } else {
             cell.detailTextLabel.text = @"";
         }
-        
-        cell.imageView.image = [UIImage imageNamed:@"sample.png"];
+        if ([contentArray[indexPath.row][@"imageHref"] isKindOfClass:[NSString class]]) {
 
+             cell.imageView.image = [UIImage imageNamed:@"sample.png"];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+        }
         
 
         return cell;

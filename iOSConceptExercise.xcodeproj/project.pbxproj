@@ -17,6 +17,7 @@
 		8E27D4851C04B0C700AC9DEB /* iOSConceptExerciseUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E27D4841C04B0C700AC9DEB /* iOSConceptExerciseUITests.m */; };
 		8E27D4941C04CF3100AC9DEB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E27D4931C04CF3100AC9DEB /* DataManager.m */; };
 		8E8CBC611C05CC9C000BAA93 /* sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8CBC601C05CC9C000BAA93 /* sample.png */; };
+		8E8CBC631C05CEC6000BAA93 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8CBC621C05CEC6000BAA93 /* placeholder.png */; };
 		F548A8A9AC36652B5737030F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61541D2B20DAF25AEE9C8966 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		8E27D4921C04CF3100AC9DEB /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		8E27D4931C04CF3100AC9DEB /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		8E8CBC601C05CC9C000BAA93 /* sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample.png; sourceTree = "<group>"; };
+		8E8CBC621C05CEC6000BAA93 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				8E27D46B1C04B0C700AC9DEB /* Assets.xcassets */,
 				8E27D46D1C04B0C700AC9DEB /* LaunchScreen.storyboard */,
 				8E27D4701C04B0C700AC9DEB /* Info.plist */,
+				8E8CBC621C05CEC6000BAA93 /* placeholder.png */,
 				8E8CBC601C05CC9C000BAA93 /* sample.png */,
 				8E27D45F1C04B0C700AC9DEB /* Supporting Files */,
 			);
@@ -284,6 +287,7 @@
 				8E8CBC611C05CC9C000BAA93 /* sample.png in Resources */,
 				8E27D46F1C04B0C700AC9DEB /* LaunchScreen.storyboard in Resources */,
 				8E27D46C1C04B0C700AC9DEB /* Assets.xcassets in Resources */,
+				8E8CBC631C05CEC6000BAA93 /* placeholder.png in Resources */,
 				8E27D46A1C04B0C700AC9DEB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
