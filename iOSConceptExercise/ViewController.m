@@ -113,6 +113,8 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         UIImageView *thumbView = nil;
         UILabel *subtitle = nil;
         
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
