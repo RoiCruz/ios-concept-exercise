@@ -8,14 +8,17 @@
 
 #import "ViewController.h"
 #import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com/facts.json";
 
 @interface ViewController () {
     NSMutableArray *contentArray;
+    NSMutableArray *imageArray;
     NSMutableArray *title;
     
     NSArray *recipes;
+    NSArray *protoypeImageArray;
 }
 
 @end
@@ -35,7 +38,7 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     
     
     contentArray = [[NSMutableArray alloc] init];
-
+    imageArray = [[NSMutableArray alloc] init];
     
     //1. convert url
     NSString *urlString = BaseURLString;
@@ -62,6 +65,9 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
             [contentArray addObjectsFromArray:[dic1 valueForKeyPath:@"rows"]];
             
             NSLog(@"content array is: %@", contentArray);
+            
+            imageArray = [contentArray valueForKey:@"imageHref"];
+            NSLog(@"image array is: %@", imageArray);
 
         }
 
@@ -76,6 +82,8 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
 
     
     recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+    
+    protoypeImageArray = [NSArray arrayWithObjects:@"http://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/American_Beaver.jpg/220px-American_Beaver.jpg", nil];
 
 }
 
@@ -115,13 +123,22 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         } else {
             cell.detailTextLabel.text = @"";
         }
-        if ([contentArray[indexPath.row][@"imageHref"] isKindOfClass:[NSString class]]) {
+        
+//        [cell.imageView setImageWithURL:[NSURL URLWithString:[protoypeImageArray objectAtIndex:1]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+        
+       // NSLog(@"first image index is %@", [[imageArray objectAtIndex:0] objectAtIndex:0]);
 
-             cell.imageView.image = [UIImage imageNamed:@"sample.png"];
+        //[cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:0]]];
+
+        
+        if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
+            NSLog(@"image array is string");
+
+            [cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
         } else {
             cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
         }
-        
+
 
         return cell;
 }
