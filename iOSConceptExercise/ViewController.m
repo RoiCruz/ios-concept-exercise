@@ -8,14 +8,17 @@
 
 #import "ViewController.h"
 #import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com/facts.json";
 
 @interface ViewController () {
-    NSMutableArray *content;
+    NSMutableArray *contentArray;
+    NSMutableArray *imageArray;
     NSMutableArray *title;
     
     NSArray *recipes;
+    NSArray *protoypeImageArray;
 }
 
 @end
@@ -34,8 +37,8 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     // Do any additional setup after loading the view, typically from a nib.
     
     
-    content = [[NSMutableArray alloc] init];
-
+    contentArray = [[NSMutableArray alloc] init];
+    imageArray = [[NSMutableArray alloc] init];
     
     //1. convert url
     NSString *urlString = BaseURLString;
@@ -47,42 +50,42 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     
     //2. parse data to dictionary
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"View loaded here");
 
-        NSDictionary *dic = (NSDictionary *)responseObject;
-        title = [dic objectForKey:@"title"];
-        NSLog(@"title array is: %@", title);
+        NSLog(@"response object is %@", NSStringFromClass([responseObject class]));
+        if([responseObject isKindOfClass:[NSDictionary class]]) {
         
-        NSDictionary *dic1 = (NSDictionary *)responseObject;
-        content = [dic1 objectForKey:@"rows"];
-        NSLog(@"first content count is %lu", (unsigned long)content.count);
-        NSLog(@"content array is: %@", content);
+        
+//            NSDictionary *dic = (NSDictionary *)responseObject;
+//            title = [dic objectForKey:@"title"];
+//            NSLog(@"title array is: %@", title);
+            
+            NSDictionary *dic1 = (NSDictionary *)responseObject;
+            //content = [dic1 objectForKey:@"rows"];
+            //contentArray = [dic1 valueForKeyPath:@"rows"];
+            [contentArray addObjectsFromArray:[dic1 valueForKeyPath:@"rows"]];
+            
+            NSLog(@"content array is: %@", contentArray);
+            
+            imageArray = [contentArray valueForKey:@"imageHref"];
+            NSLog(@"image array is: %@", imageArray);
+
+        }
 
         //data loaded asynchrously so got to call reloadData after setting JSON Values
         [_mTableView reloadData];
-
-        
-//        NSString *str1 = [things objectAtIndex:2];
-//        NSLog(@"%@", str1);
-        
-//        int count = 0;
-//        for (NSDictionary *dict in [dic objectForKey:@"title"]) {
-//            //statements
-//            if (count==2) {
-//                NSString *nname = [dict valueForKey:@"thing"];
-//                    NSLog(@"%@", nname);
-//            }
-//            count++;
-//        }
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //code
     }];
     [operation start];
     
+    [self.mTableView registerNib:[UINib nibWithNibName:@"MenuCustomCell" bundle:nil] forCellReuseIdentifier:@"MenuItemCell"];
+
 
     
     recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+    
+    protoypeImageArray = [NSArray arrayWithObjects:@"http://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/American_Beaver.jpg/220px-American_Beaver.jpg", nil];
 
 }
 
@@ -95,25 +98,86 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
     {
-        NSLog(@"content count is %lu", (unsigned long)[content count]);
-        return [content count];
+        NSLog(@"content count is %lu", (unsigned long)[contentArray count]);
+        return [contentArray count];
         //return [recipes count];
     }
     
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
-        static NSString *CellTableIdentifier = @"Celll";
         
+        NSString *CellTableIdentifier = @"MenuItemCell";
+        //static NSString *CellTableIdentifier = @"Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+        UILabel *label = nil;
+        UIImageView *thumbView = nil;
+        UILabel *subtitle = nil;
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellTableIdentifier];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
         
-        cell.textLabel.text = content[indexPath.row][@"description"];
+        // fix - resize custom cell upon orientation change
+        cell.frame =  CGRectMake(0, 0, tableView.frame.size.width, cell.frame.size.height);
+        
+        label = (UILabel *)[cell.contentView viewWithTag:101];
+        thumbView = (UIImageView*)[cell.contentView viewWithTag:100];
+        subtitle = (UILabel *)[cell.contentView viewWithTag:102];
+        
+        if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
+            label.text = contentArray[indexPath.row][@"title"]; //add main title
+        } else {
+            label.text = @"";
+        }
+        if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
+            subtitle.text = contentArray [indexPath.row][@"description"]; //add subtitle
+        } else {
+            subtitle.text = @"";
+        }
+
+        if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
+            NSLog(@"image array is string");
+            
+            [thumbView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]]; //lazy load images
+        } else {
+            thumbView.image = [UIImage imageNamed:@"placeholder.png"];
+        }
+
+        
+        //check if string inside array is empty, first, to avoid crash
+//        if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
+//            cell.textLabel.text = contentArray[indexPath.row][@"title"]; //add main title
+//        } else {
+//            cell.textLabel.text = @"";
+//        }
+//        if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
+//            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"]; //add subtitle
+//        } else {
+//            cell.detailTextLabel.text = @"";
+//        }
+        
+
+//        [cell.imageView setFrame:CGRectMake(0, 0, 20, 20)];
+//        [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
+//        cell.imageView.layer.cornerRadius = 4;
+//        cell.imageView.layer.masksToBounds = YES;
+        //cell.imageView.clipsToBounds = YES;
+        
+//        if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
+//            NSLog(@"image array is string");
+//
+//            [cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+//        } else {
+//            cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+//        }
+
 
         return cell;
+
 }
+
 
 
 

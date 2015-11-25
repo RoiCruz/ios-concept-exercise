@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Facts-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
@@ -36,7 +36,7 @@
                             <constraint firstItem="Xfv-j2-O2a" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="M33-r6-kAc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Y92-3C-OTg"/>
+                    <navigationItem key="navigationItem" title="Facts" id="Y92-3C-OTg"/>
                     <connections>
                         <outlet property="mTableView" destination="Xfv-j2-O2a" id="qJX-ok-CKn"/>
                     </connections>
