@@ -79,6 +79,8 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     }];
     [operation start];
     
+    [self.mTableView registerNib:[UINib nibWithNibName:@"MenuCustomCell" bundle:nil] forCellReuseIdentifier:@"MenuItemCell"];
+
 
     
     recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
@@ -103,45 +105,74 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
-        static NSString *CellTableIdentifier = @"Cell";
         
+        NSString *CellTableIdentifier = @"MenuItemCell";
+        //static NSString *CellTableIdentifier = @"Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+        UILabel *label = nil;
+        UIImageView *thumbView = nil;
+        UILabel *subtitle = nil;
         
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
         
+        label = (UILabel *)[cell.contentView viewWithTag:101];
+        thumbView = (UIImageView*)[cell.contentView viewWithTag:100];
+        subtitle = (UILabel *)[cell.contentView viewWithTag:102];
         
-        //check if string inside array is empty, first, to avoid crash
         if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
-            cell.textLabel.text = contentArray[indexPath.row][@"title"]; //add main title
+            label.text = contentArray[indexPath.row][@"title"]; //add main title
         } else {
-            cell.textLabel.text = @"";
+            label.text = @"";
         }
         if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
-            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"]; //add subtitle
+            subtitle.text = contentArray [indexPath.row][@"description"]; //add subtitle
         } else {
-            cell.detailTextLabel.text = @"";
+            subtitle.text = @"";
         }
-        
-//        [cell.imageView setImageWithURL:[NSURL URLWithString:[protoypeImageArray objectAtIndex:1]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
-        
-       // NSLog(@"first image index is %@", [[imageArray objectAtIndex:0] objectAtIndex:0]);
 
-        //[cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:0]]];
-
-        
         if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
             NSLog(@"image array is string");
-
-            [cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+            
+            [thumbView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
         } else {
-            cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+            thumbView.image = [UIImage imageNamed:@"placeholder.png"];
         }
+
+        
+        //check if string inside array is empty, first, to avoid crash
+//        if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
+//            cell.textLabel.text = contentArray[indexPath.row][@"title"]; //add main title
+//        } else {
+//            cell.textLabel.text = @"";
+//        }
+//        if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
+//            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"]; //add subtitle
+//        } else {
+//            cell.detailTextLabel.text = @"";
+//        }
+        
+
+//        [cell.imageView setFrame:CGRectMake(0, 0, 20, 20)];
+//        [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
+//        cell.imageView.layer.cornerRadius = 4;
+//        cell.imageView.layer.masksToBounds = YES;
+        //cell.imageView.clipsToBounds = YES;
+        
+//        if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
+//            NSLog(@"image array is string");
+//
+//            [cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+//        } else {
+//            cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+//        }
 
 
         return cell;
+
 }
+
 
 
 
