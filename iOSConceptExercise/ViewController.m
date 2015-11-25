@@ -106,15 +106,19 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
         
         //check if string inside array is empty, first, to avoid crash
         if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
-            cell.textLabel.text = contentArray[indexPath.row][@"title"];
+            cell.textLabel.text = contentArray[indexPath.row][@"title"]; //add main title
         } else {
             cell.textLabel.text = @"";
         }
         if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
-            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"];
+            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"]; //add subtitle
         } else {
             cell.detailTextLabel.text = @"";
         }
+        
+        cell.imageView.image = [UIImage imageNamed:@"sample.png"];
+
+        
 
         return cell;
 }
