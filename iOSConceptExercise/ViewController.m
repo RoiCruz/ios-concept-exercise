@@ -12,7 +12,7 @@
 static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com/facts.json";
 
 @interface ViewController () {
-    NSMutableArray *content;
+    NSMutableArray *contentArray;
     NSMutableArray *title;
     
     NSArray *recipes;
@@ -34,7 +34,7 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     // Do any additional setup after loading the view, typically from a nib.
     
     
-    content = [[NSMutableArray alloc] init];
+    contentArray = [[NSMutableArray alloc] init];
 
     
     //1. convert url
@@ -47,33 +47,26 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     
     //2. parse data to dictionary
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"View loaded here");
 
-        NSDictionary *dic = (NSDictionary *)responseObject;
-        title = [dic objectForKey:@"title"];
-        NSLog(@"title array is: %@", title);
+        NSLog(@"response object is %@", NSStringFromClass([responseObject class]));
+        if([responseObject isKindOfClass:[NSDictionary class]]) {
         
-        NSDictionary *dic1 = (NSDictionary *)responseObject;
-        content = [dic1 objectForKey:@"rows"];
-        NSLog(@"first content count is %lu", (unsigned long)content.count);
-        NSLog(@"content array is: %@", content);
+        
+//            NSDictionary *dic = (NSDictionary *)responseObject;
+//            title = [dic objectForKey:@"title"];
+//            NSLog(@"title array is: %@", title);
+            
+            NSDictionary *dic1 = (NSDictionary *)responseObject;
+            //content = [dic1 objectForKey:@"rows"];
+            //contentArray = [dic1 valueForKeyPath:@"rows"];
+            [contentArray addObjectsFromArray:[dic1 valueForKeyPath:@"rows"]];
+            
+            NSLog(@"content array is: %@", contentArray);
+
+        }
 
         //data loaded asynchrously so got to call reloadData after setting JSON Values
         [_mTableView reloadData];
-
-        
-//        NSString *str1 = [things objectAtIndex:2];
-//        NSLog(@"%@", str1);
-        
-//        int count = 0;
-//        for (NSDictionary *dict in [dic objectForKey:@"title"]) {
-//            //statements
-//            if (count==2) {
-//                NSString *nname = [dict valueForKey:@"thing"];
-//                    NSLog(@"%@", nname);
-//            }
-//            count++;
-//        }
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //code
@@ -95,22 +88,33 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
     {
-        NSLog(@"content count is %lu", (unsigned long)[content count]);
-        return [content count];
+        NSLog(@"content count is %lu", (unsigned long)[contentArray count]);
+        return [contentArray count];
         //return [recipes count];
     }
     
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
-        static NSString *CellTableIdentifier = @"Celll";
+        static NSString *CellTableIdentifier = @"Cell";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellTableIdentifier];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
         
-        cell.textLabel.text = content[indexPath.row][@"description"];
+        
+        //check if string inside array is empty, first, to avoid crash
+        if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
+            cell.textLabel.text = contentArray[indexPath.row][@"title"];
+        } else {
+            cell.textLabel.text = @"";
+        }
+        if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
+            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"];
+        } else {
+            cell.detailTextLabel.text = @"";
+        }
 
         return cell;
 }
