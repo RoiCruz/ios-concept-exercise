@@ -16,7 +16,7 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
 
 +(void)getData:(void(^)(NSDictionary *info, NSError* err))completion {
 
-    //1. convert url
+    //convert link string to url
     NSString *urlString = BaseURLString;
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -24,28 +24,26 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    //2. parse data to dictionary
+    //parse data into dictionary
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         if (responseObject != nil){
             if([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSLog(@"response object is %@", NSStringFromClass([responseObject class]));
                 
-                NSDictionary *dic1 = (NSDictionary *)responseObject;
+                NSDictionary *dic = (NSDictionary *)responseObject;
 
-                completion (dic1, nil);
+                completion (dic, nil);
             }
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //code
         
         NSLog(@"Error on AFHTTPRequestOperation");
         completion (nil, nil);
     }];
     
     [operation start];
-    
     
 }
      

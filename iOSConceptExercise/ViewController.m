@@ -15,35 +15,22 @@
 @interface ViewController () {
     NSMutableArray *contentArray;
     NSMutableArray *imageArray;
-    NSMutableArray *title;
-    
-    NSArray *recipes;
-    NSArray *protoypeImageArray;
 }
 
 @end
 
 @implementation ViewController
 
-- (void) viewDidAppear:(BOOL)animated {
-
-
-
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    //get dictionary info then put to workable arrays
     [DataManager getData:^(NSDictionary *info, NSError *err) {
         NSLog(@"Called getData info %@", [info description]);
         if(info != nil) {
-            NSLog(@"dic1 info is: %@", info);
-
-//            [contentArray addObjectsFromArray:[info valueForKeyPath:@"rows"]];
             contentArray = [info valueForKey:@"rows"];
-
             NSLog(@"content array is: %@", contentArray);
             
             imageArray = [contentArray valueForKey:@"imageHref"];
@@ -58,9 +45,8 @@
 
     }];
     
-    [self.mTableView registerNib:[UINib nibWithNibName:@"MenuCustomCell" bundle:nil] forCellReuseIdentifier:@"MenuItemCell"];
-
-
+    //register custom cell to be used for uitableview
+    [self.mTableView registerNib:[UINib nibWithNibName:@"CustomCell" bundle:nil] forCellReuseIdentifier:@"ItemCell"];
 }
 
 
@@ -75,31 +61,35 @@
     {
         NSLog(@"content count is %lu", (unsigned long)[contentArray count]);
         return [contentArray count];
-        //return [recipes count];
     }
     
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
         
-        NSString *CellTableIdentifier = @"MenuItemCell";
-        //static NSString *CellTableIdentifier = @"Cell";
+        NSString *CellTableIdentifier = @"ItemCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+        
+        //initializing elements on the custom cell nib:
         UILabel *label = nil;
         UIImageView *thumbView = nil;
         UILabel *subtitle = nil;
         
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone; //remove uitableview selection color
         
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier];
         }
         
-        // fix - resize custom cell upon orientation change
+        //resize custom cell upon orientation change
         cell.frame =  CGRectMake(0, 0, tableView.frame.size.width, cell.frame.size.height);
         
+        //connect custom cell's xib elements using tags
         label = (UILabel *)[cell.contentView viewWithTag:101];
         thumbView = (UIImageView*)[cell.contentView viewWithTag:100];
         subtitle = (UILabel *)[cell.contentView viewWithTag:102];
+        
+        
+        //check if a string is valid before output to prevent errors
         
         if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
             label.text = contentArray[indexPath.row][@"title"]; //add main title
@@ -111,7 +101,6 @@
         } else {
             subtitle.text = @"";
         }
-
         if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
             NSLog(@"image array is string");
             
@@ -119,35 +108,6 @@
         } else {
             thumbView.image = [UIImage imageNamed:@"placeholder.png"];
         }
-
-        
-        //check if string inside array is empty, first, to avoid crash
-//        if ([contentArray[indexPath.row][@"title"] isKindOfClass:[NSString class]]) {
-//            cell.textLabel.text = contentArray[indexPath.row][@"title"]; //add main title
-//        } else {
-//            cell.textLabel.text = @"";
-//        }
-//        if ([contentArray[indexPath.row][@"description"] isKindOfClass:[NSString class]]) {
-//            cell.detailTextLabel.text = contentArray [indexPath.row][@"description"]; //add subtitle
-//        } else {
-//            cell.detailTextLabel.text = @"";
-//        }
-        
-
-//        [cell.imageView setFrame:CGRectMake(0, 0, 20, 20)];
-//        [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
-//        cell.imageView.layer.cornerRadius = 4;
-//        cell.imageView.layer.masksToBounds = YES;
-        //cell.imageView.clipsToBounds = YES;
-        
-//        if ([imageArray[indexPath.row] isKindOfClass:[NSString class]]) {
-//            NSLog(@"image array is string");
-//
-//            [cell.imageView setImageWithURL:[NSURL URLWithString:[imageArray objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
-//        } else {
-//            cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
-//        }
-
 
         return cell;
 
