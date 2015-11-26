@@ -126,14 +126,12 @@
 		8E27D45E1C04B0C700AC9DEB /* iOSConceptExercise */ = {
 			isa = PBXGroup;
 			children = (
+				8E4FBC5E1C06CEEF00CFC696 /* Model */,
+				8E4FBC5D1C06CE8D00CFC696 /* Controllers */,
+				8E4FBC5C1C06CE7500CFC696 /* View */,
 				8E27D4621C04B0C700AC9DEB /* AppDelegate.h */,
 				8E27D4631C04B0C700AC9DEB /* AppDelegate.m */,
-				8E27D4921C04CF3100AC9DEB /* DataManager.h */,
-				8E27D4931C04CF3100AC9DEB /* DataManager.m */,
-				8E27D4651C04B0C700AC9DEB /* ViewController.h */,
-				8E27D4661C04B0C700AC9DEB /* ViewController.m */,
 				8E27D4681C04B0C700AC9DEB /* Main.storyboard */,
-				8E8CBC661C061C69000BAA93 /* MenuCustomCell.xib */,
 				8E27D46B1C04B0C700AC9DEB /* Assets.xcassets */,
 				8E27D46D1C04B0C700AC9DEB /* LaunchScreen.storyboard */,
 				8E27D4701C04B0C700AC9DEB /* Info.plist */,
@@ -168,6 +166,32 @@
 				8E27D4861C04B0C700AC9DEB /* Info.plist */,
 			);
 			path = iOSConceptExerciseUITests;
+			sourceTree = "<group>";
+		};
+		8E4FBC5C1C06CE7500CFC696 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8E8CBC661C061C69000BAA93 /* MenuCustomCell.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		8E4FBC5D1C06CE8D00CFC696 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8E27D4651C04B0C700AC9DEB /* ViewController.h */,
+				8E27D4661C04B0C700AC9DEB /* ViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		8E4FBC5E1C06CEEF00CFC696 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8E27D4921C04CF3100AC9DEB /* DataManager.h */,
+				8E27D4931C04CF3100AC9DEB /* DataManager.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		B045D757F69948B670730A3C /* Frameworks */ = {

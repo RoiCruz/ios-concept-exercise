@@ -10,4 +10,10 @@
 
 @interface DataManager : NSObject
 
+@property (strong, nonatomic) NSDictionary *dic1;
+
++(void)getData:(void(^)(NSDictionary *info, NSError* err))completion;
+
+
+
 @end

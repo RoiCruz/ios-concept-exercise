@@ -9,8 +9,8 @@
 #import "ViewController.h"
 #import "AFNetworking.h"
 #import "UIKit+AFNetworking.h"
+#import "DataManager.h"
 
-static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com/facts.json";
 
 @interface ViewController () {
     NSMutableArray *contentArray;
@@ -36,58 +36,33 @@ static NSString *const BaseURLString = @"http://guarded-basin-2383.herokuapp.com
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
-    contentArray = [[NSMutableArray alloc] init];
-    imageArray = [[NSMutableArray alloc] init];
-    
-    //1. convert url
-    NSString *urlString = BaseURLString;
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [DataManager getData:^(NSDictionary *info, NSError *err) {
+        NSLog(@"Called getData info %@", [info description]);
+        if(info != nil) {
+            NSLog(@"dic1 info is: %@", info);
 
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    //2. parse data to dictionary
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            [contentArray addObjectsFromArray:[info valueForKeyPath:@"rows"]];
+            contentArray = [info valueForKey:@"rows"];
 
-        NSLog(@"response object is %@", NSStringFromClass([responseObject class]));
-        if([responseObject isKindOfClass:[NSDictionary class]]) {
-        
-        
-//            NSDictionary *dic = (NSDictionary *)responseObject;
-//            title = [dic objectForKey:@"title"];
-//            NSLog(@"title array is: %@", title);
-            
-            NSDictionary *dic1 = (NSDictionary *)responseObject;
-            //content = [dic1 objectForKey:@"rows"];
-            //contentArray = [dic1 valueForKeyPath:@"rows"];
-            [contentArray addObjectsFromArray:[dic1 valueForKeyPath:@"rows"]];
-            
             NSLog(@"content array is: %@", contentArray);
             
             imageArray = [contentArray valueForKey:@"imageHref"];
             NSLog(@"image array is: %@", imageArray);
-
+            
+            //data loaded asynchrously so got to call reloadData after setting JSON Values
+            [_mTableView reloadData];
+        }
+        else {
+            NSLog(@"Info is nil");
         }
 
-        //data loaded asynchrously so got to call reloadData after setting JSON Values
-        [_mTableView reloadData];
-    
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //code
     }];
-    [operation start];
     
     [self.mTableView registerNib:[UINib nibWithNibName:@"MenuCustomCell" bundle:nil] forCellReuseIdentifier:@"MenuItemCell"];
 
 
-    
-    recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
-    
-    protoypeImageArray = [NSArray arrayWithObjects:@"http://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/American_Beaver.jpg/220px-American_Beaver.jpg", nil];
-
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
