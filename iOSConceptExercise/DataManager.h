@@ -10,4 +10,6 @@
 
 @interface DataManager : NSObject
 
++(void)getData:(void(^)(NSDictionary *info, NSError* err))completion;
+
 @end
